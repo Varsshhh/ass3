@@ -1,0 +1,20 @@
+Sure! The selection function takes in a pointer to a Relation object r1 and a pointer to a DNFformula object f, and returns a pointer to a new Relation object that contains only those records from r1 that satisfy the conditions in the DNFformula.
+
+The DNFformula struct has a single member ops which is a list of lists of tuples. Each tuple represents a single comparison operation between an attribute name, a comparison operator ('<', '=', or '>'), and a pointer to an Attr object. The inner list represents a disjunctive clause, and the outer list represents a conjunction of disjunctive clauses.
+
+To implement the selection operation, we first create a new empty Relation object called result. We then iterate over each record in r1. For each record, we evaluate each disjunctive clause in the DNFformula. If any disjunctive clause is true for the record, we add the record to result.
+
+To evaluate a disjunctive clause, we iterate over each tuple in the clause. For each tuple, we retrieve the attribute name, comparison operator, and comparison value from the tuple. We then compare the value of the attribute in the current record to the comparison value using the comparison operator. If the comparison is true, we move on to the next tuple in the clause. If the comparison is false, we move on to the next disjunctive clause in the DNFformula. If all disjunctive clauses in the DNFformula are false for the current record, we move on to the next record in r1
+
+
+
+
+To implement the natural join operation between two relations r1 and r2 on a set of common attributes specified by joinattrs, the following steps can be taken:
+
+Identify the common attributes between r1 and r2 by comparing their attribute names.
+For each common attribute, create a list of pairs of records from r1 and r2 that have the same attribute value.
+Create a new relation result with attribute names and indices obtained by concatenating the attribute names and indices of r1 and r2, excluding the common attributes.
+For each pair of records in the list of pairs created in step 2, concatenate their attributes and create a new record to add to result.
+Return result.
+
+

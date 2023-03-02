@@ -1,0 +1,47 @@
+Below given are relational database schema and corresponding attribute types need to be implemented:
+
+Relational algebra describes 5
+fundamental operations, each creating a new relation object from one or two. These
+operations can be used to build more complex transformations on relational data.
+1. Union: All records of both R1 and R2. Relation * union(Relation * R1, Relation * R2)
+2. Difference: Records in R1 but not in R2
+Relation * difference (Relation * R1, Relation * R2)
+3. Cartesian Product: All possible pairs of records from R1 and R2
+Relation * catersianproduct(Relation * R1, Relation * R2)
+4. Projection: New relation with a subset of columns
+Relation * projection(Relation * R1, list<string> projectattrs)
+5. Selection: New relation with a subset of records matching a boolean
+expression in the attribute values in disjunctive normal form.
+Relation * union (Relation * R1, DNFformula * f)
+where
+struct DNFformula { list <list <tuple <string, char, Attr *> >
+> ops; } is a list of list of tuples with each tuple representing a comparison.
+The top level list stores disjunctions of clauses, each of which represents a list
+of conjunctions of comparisons. For simplicity assume that there are no
+negations.
+6. Rename: rename an attribute in schema
+Relation * difference (Relation * R1, string s1, string s2)
+
+
+Task 1: Implement the above 6 functionalities assuming that the generic
+comparison operators (==, !=, <, <=, >, >=) have been overloaded for each Attr
+object. Although the prototypes given here are non-member functions, implement the
+functionalities and member functions, when appropriate.
+Task 2: Implement some common Attribute types, e.g.
+integerAttribute, floatAttribute, stringAttribute, etc. and overload the
+operators appropriately. Also, implement the natural join operator using the above
+implemented primitive operations:
+Relation * naturaljoin(Relation * R1, Relation * R2, list<string>
+joinattr)
+The list of names in joinattr should be attribute names in both R1 and R2, and are
+the join attributes.	
+Task	3:	Provide	a	simple	console	based	user	interface	which	
+provides	the	following	functionalities using	the	above	developed	“library”:
+• Create	a new	empty table:	the	user	can	interactively	enter	the	schema.
+• Delete	an	existing	table	with	all	data	in	it.
+• Add	a	record	to	a	table.
+• Print	a table	in	appropriate	format.
+• Create	a	table	from	existing	tables	using	the	above	developed	operation
+
+
+write sample implementations of rdb.h, rdb-basics.cpp, rdb-join.cpp, rdb-attr.cpp and rdb-main.cpp
