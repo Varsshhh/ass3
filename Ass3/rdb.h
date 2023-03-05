@@ -4,14 +4,19 @@ using namespace std;
 
 class Attr{
 public:
+    string dtype;
+    Attr(string s):dtype(s){}
     // Base class for attributes
+    // virtual auto getValue();
     virtual bool operator==(const Attr &right) const = 0;
     virtual bool operator!=(const Attr &right) const = 0;
     virtual bool operator<(const Attr &right) const = 0;
     virtual bool operator<=(const Attr &right) const = 0;
     virtual bool operator>(const Attr &right) const = 0;
     virtual bool operator>=(const Attr &right) const = 0;
+    virtual void printval() const=0;
     // virtual ostream& operator<< (std::ostream& os) const = 0;
+    friend ostream& operator<<(ostream &os, Attr* attr);
     virtual Attr* clone() =0;
     virtual ~Attr() {}
 };
@@ -21,16 +26,18 @@ class IntAttr : public Attr{
 private:
     int value_;
 public:
-    IntAttr(int value) : value_(value){}
-    IntAttr(IntAttr &t):value_(t.value_){} //copy constructor
+    IntAttr(int value,string d="int") : value_(value), Attr(d){}
+    IntAttr(IntAttr &t):value_(t.value_), Attr(t.dtype){} //copy constructor
+    int getValue() const;
     bool operator==(const Attr &right) const override;
     bool operator!=(const Attr &right) const override;    
     bool operator<(const Attr &right) const override;
     bool operator<=(const Attr &right) const override;
     bool operator>(const Attr &right) const override;
     bool operator>=(const Attr &right) const override;
+    void printval() const override;
     IntAttr* clone() override;
-    friend ostream& operator<<(ostream &os, const IntAttr& intattr) ;
+    friend ostream& operator<<(ostream &os, IntAttr* intattr) ;
     ~IntAttr() {}
 };
 
@@ -39,16 +46,18 @@ class StringAttr : public Attr{
 private:
     string value_;
 public:
-    StringAttr(string value) : value_(value){}
-    StringAttr(StringAttr &t):value_(t.value_){} //copy constructor
+    StringAttr(string value,string d="string") : value_(value), Attr(d){}
+    StringAttr(StringAttr &t):value_(t.value_), Attr(t.dtype){} //copy constructor
+    string getValue() const;
     bool operator==(const Attr &right) const override;
     bool operator!=(const Attr &right) const override;
     bool operator<(const Attr &right) const override;
     bool operator<=(const Attr &right) const override;
     bool operator>(const Attr &right) const override;
     bool operator>=(const Attr &right) const override;
+    void printval() const override;
     StringAttr* clone() override;
-    friend ostream& operator<<(ostream &os, const StringAttr& stringattr) ;
+    friend ostream& operator<<(ostream &os, StringAttr* stringattr) ;
     ~StringAttr(){}
 };
 
@@ -57,16 +66,18 @@ class FloatAttr : public Attr{
 private:
     float value_;
 public:
-    FloatAttr(float value) : value_(value){}
-    FloatAttr(FloatAttr &t):value_(t.value_){} //copy constructor
+    FloatAttr(float value,string d="float") : value_(value),Attr(d){}
+    FloatAttr(FloatAttr &t):value_(t.value_),Attr(t.dtype){} //copy constructor
+    float getValue() const;
     bool operator==(const Attr &right) const override;
     bool operator!=(const Attr &right) const override;
     bool operator<(const Attr &right) const override;
     bool operator<=(const Attr &right) const override;
     bool operator>(const Attr &right) const override;
     bool operator>=(const Attr &right) const override;
+    void printval() const override;
     FloatAttr* clone() override;
-    friend ostream& operator<<(ostream &os, const FloatAttr& floatattr) ;
+    friend ostream& operator<<(ostream &os, FloatAttr* floatattr) ;
     ~FloatAttr(){}
 };
 
@@ -90,7 +101,8 @@ public:
     Attr* getAttrbyindex(const int i);
     void setAttr(const int i, Attr *attr);
     bool operator==(const Record &right) const;
-    friend ostream& operator<<(ostream &os, const Record& record) ;
+    void printrec();
+    friend ostream &operator<<(ostream &os, Record record);
     ~Record();
     friend class Relation;
 };
@@ -126,7 +138,44 @@ public:
     Relation *selection(Relation *r1, DNFformula *f);
     Relation *rename_(Relation *r1, string s1, string s2);
     Relation *naturalJoin(Relation *r1, Relation *r2, list<string> joinattrs);
-    friend ostream &operator<<(ostream &out, const Relation &r);
+    friend ostream &operator<<(ostream &os,  Relation* r);
+    void printrelation();
 };
 
 
+
+// ostream& operator<<(ostream &os, Attr* attr){
+//     if(attr->dtype=="int") {IntAttr* p1=dynamic_cast<IntAttr*>(attr);os<<p1->getValue();}
+//     else if(attr->dtype=="float"){ FloatAttr* p1=dynamic_cast<FloatAttr*>(attr);os<<p1->getValue();}
+//     else { StringAttr* p1=dynamic_cast <StringAttr*> (attr);os<<p1->getValue();}
+//     return os;
+
+// }
+
+// ostream &operator<<(ostream &os, Relation* r){
+//     os << r->getName() << "\n";
+//     for (int i = 0; i < r->nattrs(); ++i){
+//         os << r->getAttrNames()[i] << " ";
+//     }
+//     os << "\n";
+//     for(auto rec : r->getRecords()){
+//         os<<(rec)<<"\n";
+//     }
+//     return os;
+// }
+
+
+// // ostream &operator<<(ostream &os, Record* record)
+// // {
+// //     for ( auto attr : record->getAttr())
+// //     {
+// //         os << attr << " ";
+// //     }
+// //     return os;
+// // }
+// ostream& operator<<(ostream &os, Record* record) {
+//     for(auto attr: record->getAttr()) {
+//         os<<attr<<" ";
+//     }
+//     return os;
+// }

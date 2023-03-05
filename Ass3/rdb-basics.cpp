@@ -81,14 +81,7 @@ bool Record::operator==(const Record &right) const
     return true;
 }
 
-ostream &operator<<(ostream &os, const Record &record)
-{
-    for (const auto &attr : record.getAttr())
-    {
-        os << attr << " ";
-    }
-    return os;
-}
+
 
 
 Relation::Relation() : nattrs_(0), nrecs_(0) {}
@@ -463,20 +456,66 @@ Relation* Relation::rename_(Relation *r1, string s1, string s2)
     return r1;
 }
 
-// Helper function to print relation.
-ostream &operator<<(ostream &os, Relation &r)
-{
-    // Print the attribute names
-    for (const auto &attrname : r.getAttrNames())
-    {
-        os << setw(10) << left << attrname;
-    }
-    os << endl;
+//Helper function to print relation.
+// ostream &operator<<(ostream &os,  Relation* r)
+// {
+//     // Print the attribute names
+//     for (const auto &attrname : r->getAttrNames())
+//     {
+//         os << setw(10) << left << attrname;
+//     }
+//     os << endl;
 
-    // Print the records
-    for (const auto &rec : r.getRecords())
-    {
-        os << rec << endl;
+//     // Print the records
+//     for (auto rec : r->getRecords())
+//     {
+//         os << rec << endl;
+//     }
+//     return os   ;
+// }
+ostream &operator<<(ostream &os, Relation* r){
+    os << r->getName() << "\n";
+    for (int i = 0; i < r->nattrs(); ++i){
+        os << r->getAttrNames()[i] << " ";
     }
-    return os   ;
+    os << "\n";
+    for(auto rec : r->getRecords()){
+        os<<(rec)<<"\n";
+    }
+    return os;
+}
+
+
+// ostream &operator<<(ostream &os, Record* record)
+// {
+//     for ( auto attr : record->getAttr())
+//     {
+//         os << attr << " ";
+//     }
+//     return os;
+// }
+ostream& operator<<(ostream &os, Record record) {
+    for(auto attr: record.getAttr()) {
+        cout<<attr<<" ";
+    }
+    return os;
+}
+
+void Record::printrec()
+{
+    for(auto attr: this->getAttr()) {
+        attr->printval();
+    }
+    cout<<endl;
+}
+
+void Relation::printrelation()
+{
+    for(auto attrname: attrnames_) {
+        cout<<attrname<<" ";
+    }
+    cout<<endl;
+    for(auto rec: recs_) {
+        cout<<(*rec)<<endl;
+    }
 }

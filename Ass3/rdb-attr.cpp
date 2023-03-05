@@ -6,7 +6,7 @@ using namespace std;
 
 
 // IntAttr::IntAttr(IntAttr &t):value_(t.value_){} //copy constructor
-
+int IntAttr::getValue() const{return value_;}
 bool IntAttr::operator==(const Attr &right) const 
 {
     const IntAttr *rightInt = dynamic_cast<const IntAttr *>(&right);
@@ -55,7 +55,7 @@ bool IntAttr::operator>=(const Attr &right) const
     return (value_ >= rightInt->value_);
 }
 
-
+void IntAttr::printval() const{cout<<value_<<" ";}
     
 IntAttr* IntAttr::clone() 
 {
@@ -64,9 +64,9 @@ IntAttr* IntAttr::clone()
 
 
 
-ostream& operator<<(ostream &os, const IntAttr& intattr)
+ostream& operator<<(ostream &os, IntAttr* intattr) 
 {
-    os << intattr.value_;
+    os << intattr->getValue();
     return os;
 }
 
@@ -76,6 +76,7 @@ ostream& operator<<(ostream &os, const IntAttr& intattr)
 
 // StringAttr::StringAttr(string value) : value_(value) {}
 
+string StringAttr::getValue() const{return value_;}
 bool StringAttr::operator==(const Attr &right) const 
 {
     const StringAttr *rightString = dynamic_cast<const StringAttr *>(&right);
@@ -124,14 +125,16 @@ bool StringAttr::operator>=(const Attr &right) const
     return (value_ >= rightString->value_);
 }
 
+void StringAttr::printval() const{cout<<value_<<" ";}
+
 StringAttr *StringAttr::clone() 
 {
     return new StringAttr(*this); // create a new object with the same value
 }
 
-ostream& operator<<(ostream &os, const StringAttr& stringattr)
+ostream& operator<<(ostream &os, StringAttr* stringattr) 
 {
-    os << stringattr.value_;
+    os << stringattr->getValue();
     return os;
 }
 // StringAttr::~StringAttr() {}
@@ -139,6 +142,8 @@ ostream& operator<<(ostream &os, const StringAttr& stringattr)
 
 
 // FloatAttr::FloatAttr(float value) : value_(value) {}
+
+float FloatAttr::getValue() const{return value_;}
 
 bool FloatAttr::operator==(const Attr &right) const 
 {
@@ -188,14 +193,25 @@ bool FloatAttr::operator>=(const Attr &right) const
     return (value_ >= rightFloat->value_);
 }
 
+void FloatAttr::printval() const{cout<<value_<<" ";}
+
 FloatAttr* FloatAttr::clone()  
 {
     return new FloatAttr(*this); // create a new object with the same value
 }
 
-ostream& operator<<(ostream &os, const FloatAttr& floatattr)
+ostream& operator<<(ostream &os, FloatAttr* floatattr) 
 {
-    os << floatattr.value_;
+    os << floatattr->getValue();
     return os;
 }
 // FloatAttr::~FloatAttr() {}
+
+
+ostream& operator<<(ostream &os, Attr* attr){
+    if(attr->dtype=="int") {IntAttr* p1=dynamic_cast<IntAttr*>(attr);os<<p1->getValue();}
+    else if(attr->dtype=="float"){ FloatAttr* p1=dynamic_cast<FloatAttr*>(attr);os<<p1->getValue();}
+    else { StringAttr* p1=dynamic_cast <StringAttr*> (attr);os<<p1->getValue();}
+    return os;
+
+}
