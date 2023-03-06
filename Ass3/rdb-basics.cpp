@@ -494,7 +494,7 @@ ostream &operator<<(ostream &os, Relation* r){
 //     }
 //     return os;
 // }
-ostream& operator<<(ostream &os, Record record) {
+ostream& operator<<(ostream &os, Record& record) {
     for(auto attr: record.getAttr()) {
         cout<<attr<<" ";
     }
